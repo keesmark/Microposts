@@ -1,11 +1,25 @@
 Rails.application.routes.draw do
+  devise_for :users
   root to: 'toppages#index'
+  
+  get 'home/index'
+  root to: 'home#index'
   
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   
-  get 'singup', to: 'users#new'
-  resources :users, only:[:index, :show, :new, :create]
+  get 'signup', to: 'users#new'
+  resources :users, only:[:index, :show, :new, :create] do
+    member do
+      get :followings
+      get :followers
+    end
+    collection do
+      get :search
+    end
+  end
   
+  resources :microposts, only: [:create, :destroy]
+  resources :relationships, only: [:create, :destroy]
 end
