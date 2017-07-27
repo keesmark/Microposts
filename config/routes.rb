@@ -14,12 +14,14 @@ Rails.application.routes.draw do
     member do
       get :followings
       get :followers
-    end
-    collection do
-      get :search
+      get :favarites
     end
   end
   
-  resources :microposts, only: [:create, :destroy]
+  resources :microposts, only: [:create, :destroy] do
+    resource :favarites, only: [:create, :destroy]
+  end
+  
   resources :relationships, only: [:create, :destroy]
+  
 end
